@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Billing System</title>
+
+    <style>
+        .HeadTag {
+            font: bold 45px comic-sans;
+            color: white;
+            background-color: teal;
+            margin-bottom: 100px;
+        }
+        .LogOutTag {
+            background-color: olivedrab;
+            margin-left: 1150px;
+            margin-bottom: 50px;
+            width: 80px;
+            border: 1px solid black;
+            padding-left: 13px;
+        }
+        .MenuTag {
+            font: 20px comic-sans;
+            color: white;
+            background-color: teal;
+            margin-bottom: 30px;
+        }
+        label {
+            padding-right: 20px;
+            padding-bottom: 20px;
+        }
+        label.adminTitle {
+            font: 20px comic-sans;
+            color: blue;
+            padding-left: 500px;
+        }
+        input, select {
+            margin-bottom: 5px;
+        }
+        button {
+            margin-left: 150px;
+            color: white;
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="HeadTag">PAYMENT BILLING SYSTEM</div>
+    <div class="LogOutTag">
+        <a href="/adminLogin/" id="LO">LOG OUT</a>
+    </div>
+    <div class="MenuTag">
+        <label id="home">HOME</label>
+        <label id="newRegistration">NEW REGISTRATION</label>
+        <label id="modifyDetail">MODIFY DETAIL</label>
+        <label id="administrator">ADMINISTRATOR</label>
+        <label id="contactUs">CONTACT US</label>
+    </div>  
+    <div class="Body">
+        <label class="adminTitle">CONSULTANT</label> <br><br>
+        <form id="bPay" method="POST" action='/createAccountant/'> 
+            {% csrf_token %}
+            {{ form_br.as_p }}
+            {{ form.as_p }}
+            <button type="submit" id="acntntCreate">Create</button>
+        </form>
+    </div>
+</body>
+</html>

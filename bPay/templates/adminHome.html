@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Billing System</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        function displayTable() {
+            br = document.getElementById('branchNames');
+            branchName = br.options[br.selectedIndex].text;
+            nameEntered = document.getElementById('searchText').value;
+            $.ajax({
+                type: "POST",
+                url: "{%url 'getDetailsA1' %}",
+                data: {
+                    'branchName': branchName,
+                    'nameEntered': nameEntered,
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'get',
+                },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    console.log("Success " + data[1]);
+                    console.log("Success " + data[0]); 
+                    console.log(data[0].Salary)
+                    document.getElementById('T1').style.display="block";
+                    for(let i=0; i<(data.length); i++) {
+                        document.getElementById('ID').innerHTML = data[i].Id;
+                        document.getElementById('Name').innerHTML = data[i].Username;
+                        document.getElementById('Salary').innerHTML = data[i].Salary;                        
+                    }
+                },
+                error: function(data) {
+                    console.log("Error " + data);
+                }
+            });
+        }
+    </script>
+    <style>
+        .HeadTag {
+            font: bold 45px comic-sans;
+            color: white;
+            background-color: teal;
+            margin-bottom: 100px;
+        }
+        .LogOutTag {
+            background-color: olivedrab;
+            margin-left: 1150px;
+            margin-bottom: 50px;
+            width: 85px;
+            border: 1px solid black;
+            padding-left: 13px;
+        }
+        .MenuTag {
+            font: 20px comic-sans;
+            color: white;
+            background-color: teal;
+            margin-bottom: 30px;
+        }
+        .Find {
+            float: left;
+        }
+        .CreateAccountant {
+            float: left;
+            margin-top: 50px;
+            margin-left: 1100px;
+        }
+        #LO {
+            font: 17px comic-sans;
+            color: black;
+        }
+        #CA {
+            font: 17px comic-sans;
+            color: blue;
+        }
+        label {
+            padding-right: 20px;
+            padding-bottom: 20px;
+        }
+        label.adminTitle {
+            font: 20px comic-sans;
+            color: blue;
+            padding-left: 500px;
+        }
+        input, select {
+            margin-bottom: 20px;
+        }
+        table, tr, th, td {
+            border: 1px solid black;
+        }
+        #T1 {
+            display: "block";
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="HeadTag">PAYMENT BILLING SYSTEM</div>
+    <div class="LogOutTag">
+        <a href="/adminLogin/" id="LO">LOG OUT</a>
+    </div>
+    <div class="MenuTag">
+        <label id="home">HOME</label>
+        <label id="newRegistration">NEW REGISTRATION</label>
+        <label id="modifyDetail">MODIFY DETAIL</label>
+        <label id="administrator">ADMINISTRATOR</label>
+        <label id="contactUs">CONTACT US</label>
+    </div>  
+    <div class="Body">
+        <div class="Find">
+            <form id='bPay'>
+                <label class="adminTitle">CONSULTANT</label> <br><br>
+                <label>Branch</label> 
+                <select id="branchNames" required>
+                    <option disabled selected> ----------- </option>
+                    <option value="1">ASEAN</option>
+                    <option value="2">Australia/New Zealand</option>
+                    <option value="3">BeNeLux</option>
+                    <option value="4">Brazil</option>
+                    <option value="5">Canada</option>
+                    <option value="6">CEE</option>
+                    <option value="7">DACH</option>
+                    <option value="8">France</option>
+                    <option value="9">Greater China</option>
+                    <option value="10">India/South Asia</option>
+                    <option value="11">Italy</option>
+                    <option value="12">Korea</option>
+                    <option value="13">MEA</option>
+                    <option value="14">Mexico</option>
+                    <option value="15">Nordic</option>
+                    <option value="16">SPGI</option>
+                    <option value="17">SSA</option>
+                    <option value="18">UKI</option>
+                    <option value="19">United States</option>
+                </select></br>
+                <label>Find:</label>
+                <input type="text" id="searchText">
+                <button type="button" id="search" onclick="displayTable()">Search</button> <br><br>
+                {% if not data %}
+                <table id="T1">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Salary</th>
+                    </tr>
+                    </thead>    
+                    <tbody>
+                    {% for val in data %}
+                        {% for k,v in val.items %}
+                        {% empty %}
+                        <tr>
+                            <td id="ID">{{ v }}</td>
+                            <td id="Name">{{ v }}</td>
+                            <td id="Salary">{{ v }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <label>No Data</label>
+                {% endif %}
+            </form>
+        </div>
+        <div class="CreateAccountant">
+            <a href="/accountantCreation/" id="CA">Create New Accountant</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Billing System</title>
+
+    <style>
+        .HeadTag {
+            font: bold 45px comic-sans;
+            color: white;
+            background-color: teal;
+            margin-bottom: 100px;
+        }
+        .SigningInTag {
+            font: bold;
+            color: white;
+            background-color: black;
+            margin-left: 1150px;
+            margin-bottom: 50px;
+            width: 80px;
+            border: 1px solid black;
+            padding-left: 20px;
+        }
+        .MenuTag {
+            font: 20px comic-sans;
+            color: white;
+            background-color: teal;
+            margin-bottom: 30px;
+        }
+        .Login {        
+            float: left;
+        }
+        .Notice {
+            float: left;
+        }
+        label {
+            padding-right: 20px;
+            padding-bottom: 20px;
+        }
+        label.adminTitle {
+            font: 20px comic-sans;
+            color: blue;
+            padding-left: 500px;
+        }
+        label.adminLogin {
+            font: bold comic-sans;
+            color: blue;
+            padding-bottom: 20px;
+        }
+        label.notice {
+            font: bold comic-sans;
+            color: blue;
+            padding-left: 250px;
+        }
+        label.noticeText {
+            font: comic-sans;
+            padding-left: 200px;
+        }
+        input,select {
+            margin-bottom: 5px;
+        }
+        button {
+            margin-left: 150px;
+            color: white;
+            background-color: black;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <div class="HeadTag">PAYMENT BILLING SYSTEM</div>
+    <div class="SigningInTag">
+        <label id="signIn">SIGN IN</label>
+    </div>
+    <div class="MenuTag">
+        <label id="home">HOME</label>
+        <label id="newRegistration">NEW REGISTRATION</label>
+        <label id="modifyDetail">MODIFY DETAIL</label>
+        <label id="administrator">ADMINISTRATOR</label>
+        <label id="contactUs">CONTACT US</label>
+    </div>  
+    <div class="Body">
+        <label id="invalidLogin"></label> <br>
+        <div class="Login">
+            <form id="bPay" method="POST" action='/adminAuth/'> 
+                {% csrf_token %} 
+                <label class="adminTitle">CONSULTANT</label> <br>
+                <label class="adminLogin">Admin Login Form</label> <br>
+                {{ form.as_p }}
+                <!-- <label id="username">Username : </label></br>
+                <input type="text" id="usrname"> </br>
+                <label id="passwd">Password : </label></br>
+                <input type="password" id="usrpwd"> </br> --> 
+                <button type="submit" id="adminlogin">Login</button>
+            </form>
+        </div>
+        <div class="Notice">
+            <label class="notice">Notice</label> <br><br>
+            <label class="noticeText">Welcome Administrator! You can visit a lot of Information about various Branches and Accountants</label>
+        </div>
+    </div>
+</body>
+</html>
