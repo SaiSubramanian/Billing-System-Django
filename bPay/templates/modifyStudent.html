@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block headContent %}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        function fillDetails(param) {
+            console.log(param);
+            $.ajax({
+                type: "POST",
+                url: "{%url 'fillStudentDetails' %}",
+                data: {                    
+                    'userID': param,                                            
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'post',
+                },
+                success: function(data) {
+                    console.log('Success');
+                    document.write(data);
+                },
+                error: function(data) {
+                    console.log('Error' + data);
+                }
+            });    
+        } 
+    </script>
+
+    <style>
+        .HeadTag {
+            font: bold 45px comic-sans;
+            color: white;
+            background-color: teal;        
+        }
+        .LogOutTag {
+            height: 200px;            
+        }
+        .MenuTag {
+            font: 20px comic-sans;
+            color: white;
+            background-color: teal;
+            margin-bottom: 30px;
+        }
+        .searchStud {
+            float: left;            
+        }
+        .modifyStud {
+            float: left;
+        }        
+        #home, #registerStudent, #modifyStudent, #administrator, #contact { 
+            text-decoration: none;
+            font: 20px comic-sans;
+            color: white;
+            padding-right: 50px;
+        }
+        #LO {
+            position: absolute;
+            text-decoration: none;
+            font: 17px comic-sans;
+            color: black;
+            background-color: olivedrab;
+            margin-left: 1150px;
+            margin-top: 100px;
+            margin-bottom: 50px;
+            width: 85px;
+            border: 1px solid black;
+            padding-left: 13px;
+        }
+        label {
+            position: absolute;
+            padding-right: 20px;
+            padding-bottom: 20px;
+        }
+        label.accountantTitle {
+            font: 20px comic-sans;
+            color: blue;
+            padding-left: 500px;
+        }
+        input, select {
+            margin-left: 50px;
+            margin-bottom: 5px;
+        }       
+        button {          
+            margin-left: 50px;              
+            color: white;
+            background-color: black;
+        }
+        table, tr, th, td, thead, tbody {
+            border: 1px solid black;
+        }
+        #T1 {
+            display: "block";
+            width: 50%;
+        }
+        #id_Name, #id_Course, #id_Mobile, #id_Father_name, #id_Mother_name, #id_Qualification, 
+        #id_DOB, #id_Date_of_Joining, #id_Date_of_Submission, #id_Paid, #id_Fee, #id_Balance,
+        #id_Address, #id_Description, #id_Trainer, #Modify {
+            margin-left: 140px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block authContent %}
+
+    <div class="LogOutTag" style="background-image: url(/static/system-update.png); background-attachment: fixed;
+    background-size: cover;">
+        <a href="/logOut/" id="LO">LOG OUT</a>
+    </div>
+
+{% endblock %}
+
+{% block bodyContent %}
+    <div class="Body">
+        <div class="modifyStud">
+            <form id="bPay2" method="POST" action="/modifyStudentDetails/">
+                {% csrf_token %}
+                {% if form %}
+                {{ form.as_p }}
+                <button id="Modify" type="submit">Modify</button>
+                {% endif %}
+            </form>
+        </div>
+        <div class="searchStud">
+            <form id="bPay1" method="POST" action="/getStudentDetails/"> 
+                {% csrf_token %}
+                {{ form_ip.as_p }}
+                <button type="submit">Search</button>
+                <br> <br>
+                {% if shortData %}
+                <table id="T1">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                    </tr>
+                    </thead>    
+                    <tbody>
+                    {% for val in shortData %}
+                    <tr>   
+                        <td><a href="javascript:fillDetails('{{ val.id }}')">{{ val.id }}</a></td>                                             
+                        <td>{{ val.Name }}</td>
+                        <td>{{ val.Mobile }}</td>                        
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+                <br> <br>                
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

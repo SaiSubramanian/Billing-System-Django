@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+{% load static %}
+
+<head style="width: 100%;">
+    <!-- <link rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
+    crossorigin="anonymous"> -->
+    <link rel="icon" type="image/png" href="{% static 'index2.png' %}">    
+    <title>Payment Billing System</title>
+    {% block headContent %} {% endblock %}
+</head>
+<body style="background-image: url(/static/wallpaper3.png); background-repeat: no-repeat; background-attachment: fixed;
+background-size: cover;">
+    <div class="HeadTag"><label>  </label>PAYMENT BILLING SYSTEM</div>
+    <!--<img src="{% static 'bg.png' %}" alt="" height="200px" width="1100px"> -->
+    {% block authContent %} {% endblock %}
+    <nav class="MenuTag">
+        <label>  </label>
+        <a id="home" href="/acHome/">HOME</a>
+        <a id="registerStudent" href="/acRegisterStudent/">NEW REGISTRATION</a>
+        <a id="modifyStudent" href="/acModifyStudent/">MODIFY DETAIL</a>
+        <a id="administrator" href="/adHome/">ADMINISTRATOR</a>
+        <a id="contact" href="/contact/">CONTACT US</a>
+    </nav>
+    {% block bodyContent %} {% endblock %}
+</body>
+</html>

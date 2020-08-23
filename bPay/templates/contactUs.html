@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block headContent %}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        function sendMail() {
+            mailID = document.getElementById('Email').value;
+            query = document.getElementById('QueryText').value;
+            console.log(mailID, query);
+            $.ajax ({
+                type: "POST",
+                url: "{% url 'sendMail' %}",
+                data: {
+                    'mailID': mailID,
+                    'query': query,
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                },
+                success: function(data) {
+                    console.log('Success')
+                },
+                error: function(data) {
+                    console.log('Error')
+                }
+            });
+        }
+    </script>
+    <style>
+        .HeadTag {
+            font: bold 45px comic-sans;
+            color: white;
+            background-color: teal;            
+        }
+        .LogOutTag {
+            height: 200px;            
+        }
+        .MenuTag {
+            font: 20px comic-sans;
+            color: white;
+            background-color: teal;
+            margin-bottom: 30px;
+        }
+        #home, #registerStudent, #modifyStudent, #administrator, #contact { 
+            text-decoration: none;
+            font: 20px comic-sans;
+            color: white;
+            padding-right: 50px;
+        }
+        #LO {
+            position: absolute;
+            text-decoration: none;
+            font: 17px comic-sans;
+            color: black;
+            background-color: olivedrab;
+            margin-left: 1150px;
+            margin-top: 100px;
+            margin-bottom: 50px;
+            width: 85px;
+            border: 1px solid black;
+            padding-left: 13px;
+        }
+        #signIn {
+            position: absolute;
+            font: bold;
+            color: white;
+            background-color: black;
+            margin-left: 1150px;
+            margin-top: 100px;            
+            margin-bottom: 50px;
+            width: 60px;
+            border: 1px solid black;
+            padding-top: 15px;
+            padding-left: 20px;
+        }
+        label {            
+            padding-right: 20px;
+            padding-bottom: 20px;
+        }
+        input {
+            margin-bottom: 20px;            
+        }
+        button {
+            color: white;
+            background-color: black;
+        }
+        #Mail, #Query {
+            position: absolute;
+        }
+        #Email, #QueryText, #btn {
+            margin-left: 120px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block authContent %}
+
+    <div class="LogOutTag" style="background-image: url(/static/system-update.png); background-attachment: fixed;
+    background-size: cover;">        
+        {% if userThere %}
+        <a href="/logOut/" id="LO">LOG OUT</a>
+        {% else %}
+        <label id="signIn">SIGN IN</label>
+        {% endif %}
+    </div>    
+
+{% endblock %}
+
+{% block bodyContent %}
+
+    <div class="Body">
+        <form id="bPay">
+            <label id="Mail">Your Mail-ID</label>
+            <input type="email" id="Email" size="30"> <br>
+            <label id="Query">Your Query</label>
+            <textarea id="QueryText" rows="10" cols="40"></textarea> <br><br>
+            <button id="btn" type="submit" onclick="sendMail()">Submit</button>
+        </form>
+    </div>
+
+{% endblock %}

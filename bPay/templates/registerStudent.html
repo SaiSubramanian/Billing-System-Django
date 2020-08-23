@@ -9,18 +9,13 @@
             background-color: teal;            
         }
         .LogOutTag {
-            height: 200px;              
+            height: 200px;            
         }
         .MenuTag {
             font: 20px comic-sans;
             color: white;
             background-color: teal;
             margin-bottom: 30px;
-        }
-        label {
-            position: absolute;
-            padding-right: 20px;
-            padding-bottom: 20px;
         }
         #home, #registerStudent, #modifyStudent, #administrator, #contact { 
             text-decoration: none;
@@ -33,16 +28,20 @@
             text-decoration: none;
             font: 17px comic-sans;
             color: black;
-            margin-right: 5px;
             background-color: olivedrab;
-            margin-left: 1150px;
+            margin-left: 1125px;
             margin-top: 100px;
             margin-bottom: 50px;
-            width: 80px;
+            width: 85px;
             border: 1px solid black;
-            padding-left: 10px;
+            padding-left: 13px;
         }
-        label.adminTitle {
+        label {
+            position: absolute;
+            padding-right: 20px;
+            padding-bottom: 20px;            
+        }
+        label.accountantTitle {
             font: 20px comic-sans;
             color: blue;
             padding-left: 500px;
@@ -50,17 +49,19 @@
         input, select {
             margin-bottom: 5px;
         }
+        input {
+            margin-right: 800px;        
+        }
         button {
-            margin-left: 120px;
+            margin-left: 140px;
             color: white;
             background-color: black;
         }
-        #id_branch {
-            padding-right: 10px;
-        }
-        #id_branch, #id_userName, #id_passWord, #id_DOJ, #id_DOB, #id_salary {
-            margin-left: 120px;
-        }
+        #id_Name, #id_Course, #id_Mobile, #id_Father_name, #id_Mother_name, #id_Qualification, 
+        #id_DOB, #id_Date_of_Joining, #id_Date_of_Submission, #id_Paid, #id_Fee, #id_Balance,
+        #id_Address, #id_Description, #id_Trainer {
+            margin-left: 140px;
+        }         
     </style>
 
 {% endblock %}
@@ -75,15 +76,11 @@
 {% endblock %}
 
 {% block bodyContent %}
- 
-    <div class="Body">
-        <label class="adminTitle">CONSULTANT</label> <br><br>
-        <form id="bPay" method="POST" action='/createAccountant/'> 
-            {% csrf_token %}
-            {{ form_br.as_p }}
-            {{ form.as_p }}
-            <button type="submit" id="acntntCreate">Create</button>
-        </form>
-    </div>
+
+    <form id="bPay" method="POST" action="/registerStudentDetails/">
+        {% csrf_token %}
+        {{ form_st.as_p }}
+        <button type="submit">Save</button>
+    </form>
 
 {% endblock %}

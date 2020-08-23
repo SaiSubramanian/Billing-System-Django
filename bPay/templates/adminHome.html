@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Payment Billing System</title>
+{% extends 'base.html' %}
+
+{% block headContent %}
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
         function displayTable() {
@@ -10,7 +10,7 @@
             nameEntered = document.getElementById('searchText').value;
             $.ajax({
                 type: "POST",
-                url: "{%url 'getDetailsA1' %}",
+                url: "{%url 'getDetailsAd1' %}",
                 data: {
                     'branchName': branchName,
                     'nameEntered': nameEntered,
@@ -34,21 +34,67 @@
                 }
             });
         }
+
+        function expandID(param) {
+            console.log(param);
+            $.ajax({
+                type: "POST",
+                url: "{%url 'getDetailsAd2' %}",
+                data: {                    
+                    'userID': param,                                            
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'get',
+                },
+                success: function(data) {
+                    data = JSON.parse(data)
+                    console.log("Success " + data); 
+                    document.getElementById('T2').style.display="block";
+                    document.getElementById('ID').style.width="60px";
+                    document.getElementById('ID').innerHTML = param;
+                    document.getElementById('Username').style.width="150px";
+                    document.getElementById('Username').innerHTML = data.Username;
+                    document.getElementById('Date_of_Joining').style.width="200px";
+                    document.getElementById('Date_of_Joining').innerHTML = data.Date_of_Joining;
+                    document.getElementById('DOB').style.width="200px";
+                    document.getElementById('DOB').innerHTML = data.DOB;   
+                    document.getElementById('Salary').style.width="100px";
+                    document.getElementById('Salary').innerHTML = data.Salary;
+                    document.getElementById('Remove').style.width="100px";                   
+                },
+                error: function(data) {
+                    console.log("Error " + data);
+                }
+            });
+        }
+
+        function removeData() {
+            userID = document.getElementById('ID').innerHTML;
+            console.log(userID);
+            $.ajax({
+                type: "POST",
+                url: "{%url 'deleteData' %}",
+                data: {                    
+                    'userID': userID,                                            
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'get',
+                },
+                success: function(data) {
+                    console.log('Success')
+                },
+                error: function(data) {
+                    console.log('Error' + data)
+                }
+            });
+        }
     </script>
     <style>
         .HeadTag {
             font: bold 45px comic-sans;
             color: white;
-            background-color: teal;
-            margin-bottom: 100px;
+            background-color: teal;            
         }
         .LogOutTag {
-            background-color: olivedrab;
-            margin-left: 1150px;
-            margin-bottom: 50px;
-            width: 85px;
-            border: 1px solid black;
-            padding-left: 13px;
+            height: 200px;            
         }
         .MenuTag {
             font: 20px comic-sans;
@@ -58,20 +104,40 @@
         }
         .Find {
             float: left;
-        }
+        }     
         .CreateAccountant {
             float: left;
-            margin-top: 50px;
             margin-left: 1100px;
         }
+        #home, #registerStudent, #modifyStudent, #administrator, #contact { 
+            text-decoration: none;
+            font: 20px comic-sans;
+            color: white;
+            padding-right: 50px;
+        }
         #LO {
+            position: absolute;
+            text-decoration: none;
             font: 17px comic-sans;
             color: black;
+            background-color: olivedrab;
+            margin-left: 1150px;
+            margin-top: 100px;
+            margin-bottom: 50px;
+            width: 85px;
+            border: 1px solid black;
+            padding-left: 13px;            
         }
-        #CA {
+        #CA {            
             font: 17px comic-sans;
             color: blue;
         }
+        /* a {
+            font: 16px comic-sans;
+            text-decoration: underline;
+            color: black;
+            padding-right: 0px;
+        } */
         label {
             padding-right: 20px;
             padding-bottom: 20px;
@@ -82,34 +148,49 @@
             padding-left: 500px;
         }
         input, select {
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
-        table, tr, th, td {
+        button {
+            margin-left: 73px;            
+            color: white;
+            background-color: black;
+        }
+        table, tr, th, td, thead, tbody {
             border: 1px solid black;
         }
         #T1 {
             display: "block";
             width: 50%;
         }
+        #id_branch {            
+            padding-right: 10px;
+        }
+        #id_inputText {
+            margin-left: 16px;
+        }
     </style>
-</head>
 
-<body>
-    <div class="HeadTag">PAYMENT BILLING SYSTEM</div>
-    <div class="LogOutTag">
-        <a href="/adminLogin/" id="LO">LOG OUT</a>
+{% endblock %}
+
+{% block authContent %}
+
+    <div class="LogOutTag" style="background-image: url(/static/system-update.png); background-attachment: fixed;
+    background-size: cover;">
+        <a href="/logOut/" id="LO">LOG OUT</a>
     </div>
-    <div class="MenuTag">
-        <label id="home">HOME</label>
-        <label id="newRegistration">NEW REGISTRATION</label>
-        <label id="modifyDetail">MODIFY DETAIL</label>
-        <label id="administrator">ADMINISTRATOR</label>
-        <label id="contactUs">CONTACT US</label>
-    </div>  
+    
+{% endblock %}
+
+{% block bodyContent %}
+
     <div class="Body">
         <div class="Find">
-            <form id='bPay'>
+            <form id='bPay' method="POST" action="/accountantsDetails/">
+                {% csrf_token %}
                 <label class="adminTitle">CONSULTANT</label> <br><br>
+                {{ form_br.as_p }}
+                {{ form_ip.as_p }}
+                <!--
                 <label>Branch</label> 
                 <select id="branchNames" required>
                     <option disabled selected> ----------- </option>
@@ -132,11 +213,12 @@
                     <option value="17">SSA</option>
                     <option value="18">UKI</option>
                     <option value="19">United States</option>
-                </select></br>
+                </select></br> 
                 <label>Find:</label>
                 <input type="text" id="searchText">
-                <button type="button" id="search" onclick="displayTable()">Search</button> <br><br>
-                {% if not data %}
+                -->
+                <button type="submit" id="search">Search</button> <br><br>
+                {% if shortData %}
                 <table id="T1">
                     <thead>
                     <tr>
@@ -146,26 +228,72 @@
                     </tr>
                     </thead>    
                     <tbody>
-                    {% for val in data %}
-                        {% for k,v in val.items %}
-                        {% empty %}
-                        <tr>
-                            <td id="ID">{{ v }}</td>
-                            <td id="Name">{{ v }}</td>
-                            <td id="Salary">{{ v }}</td>
-                        </tr>
-                        {% endfor %}
+                    {% for val in shortData %}
+                    <tr>
+                        <!--<td><button id='expand' type="button" onclick="expandID({{val}})">{{ val.id }}</button></td>-->
+                        <td><a id="userID" href="javascript:expandID('{{ val.id }}')">{{ val.id }}</a></td>
+                        <td>{{ val.Username }}</td>
+                        <td>{{ val.Salary }}</td>                        
+                    </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-                {% else %}
-                <label>No Data</label>
                 {% endif %}
+                <br> <br> 
+                <!-- {% if allData %}
+                <table id="T2">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date of Joining</th>
+                        <th>Date of Birth</th>
+                        <th>Salary</th>
+                        <th>Remove</th>
+                    </tr>
+                    </thead>    
+                    <tbody>
+                    {% for val in allData %}
+                    <tr>
+                        <td>{{ val.id }}</td>                    
+                        <td>{{ val.Username }}</td>
+                        <td>{{ val.Date_of_Joining }}</td>
+                        <td>{{ val.DOB }}</td>
+                        <td>{{ val.Salary }}</td>
+                        <td><a href="#">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %} -->
+                <table id="T2" style="display: none; width: 70%;">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date of Joining</th>
+                        <th>Date of Birth</th>
+                        <th>Salary</th>
+                        <th>Remove</th>
+                    </tr>
+                    </thead>    
+                    <tbody>
+                    <tr>
+                        <td id="ID"></td>                    
+                        <td id="Username"></td>
+                        <td id="Date_of_Joining"></td>
+                        <td id="DOB"></td>
+                        <td id="Salary"></td>
+                        <td id="Remove"><a id="remove" href="javascript:removeData()">Delete</a></td>
+                    </tr>
+                    </tbody>
+                </table> 
             </form>
         </div>
         <div class="CreateAccountant">
+            <br>
             <a href="/accountantCreation/" id="CA">Create New Accountant</a>
         </div>
     </div>
-</body>
-</html>
+
+{% endblock %}

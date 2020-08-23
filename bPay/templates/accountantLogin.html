@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Payment Billing System</title>
+{% extends 'base.html' %}
+
+{% block headContent %}
 
     <style>
         .HeadTag {
             font: bold 45px comic-sans;
             color: white;
-            background-color: teal;
-            margin-bottom: 100px;
+            background-color: teal;            
         }
         .SigningInTag {
+            height: 200px;
+        }
+        #signIn {
+            position: absolute;
             font: bold;
             color: white;
             background-color: black;
             margin-left: 1150px;
+            margin-top: 100px;            
             margin-bottom: 50px;
-            width: 80px;
+            width: 60px;
             border: 1px solid black;
+            padding-top: 15px;
             padding-left: 20px;
         }
         .MenuTag {
@@ -37,9 +41,15 @@
             padding-bottom: 20px;
         }
         a { 
+            text-decoration: none;
             font: 20px comic-sans;
-            color: blue;
+            color: white;
+            padding-right: 50px;
+        }
+        #LAA {
+            text-decoration: underline;
             padding-left: 500px;
+            color: blue;
         }
         label.acntntLogin {
             color: blue;
@@ -59,32 +69,42 @@
             margin-bottom: 5px;
         }
         button {
-            margin-left: 150px;
+            margin-left: 93px;
             color: white;
             background-color: black;
         }
+        #invalidLogin {
+            font-size: 30px;
+            color: red;
+        }
+        #id_branch {
+            margin-left: 19px;
+            padding-right: 10px;
+        }
+        #id_passWord {
+            margin-left: 3px;
+        }
     </style>
     
-</head>
+{% endblock %}
 
-<body>
-    <div class="HeadTag">PAYMENT BILLING SYSTEM</div>
-    <div class="SigningInTag">
+{% block authContent %}
+
+    <div class="SigningInTag" style="background-image: url(/static/system-update.png); background-attachment: fixed;
+    background-size: cover;">
         <label id="signIn">SIGN IN</label>
     </div>
-    <div class="MenuTag">
-        <label id="home">HOME</label>
-        <label id="newRegistration">NEW REGISTRATION</label>
-        <label id="modifyDetail">MODIFY DETAIL</label>
-        <label id="administrator">ADMINISTRATOR</label>
-        <label id="contactUs">CONTACT US</label>
-    </div>
+
+{% endblock %}
+
+{% block bodyContent %}
+
     <div class="Body">
-        <label id="invalidLogin"></label> <br>
+        <label id="invalidLogin"><b>{{ error }}</b></label> <br>
         <div class="Login">
             <form id="bPay" method="POST" action='/accountantAuth/'>
                 {% csrf_token %}
-                <a href="/adminLogin/">Login As Administrator</a> <br>
+                <a id="LAA" href="/adminLogin/">Login As Administrator</a> <br>
                 <label class="acntntLogin">Login Form</label> <br><br>
                 {{ form_br.as_p }}
                 {{ form.as_p }}
@@ -96,9 +116,10 @@
             </form>
         </div>
         <div class="Notice">
+            <br>
             <label class="notice">Notice</label> <br><br>
             <label class="noticeText">Welcome Accountant!</label>
         </div>
     </div>
-</body>
-</html>
+
+{% endblock %}

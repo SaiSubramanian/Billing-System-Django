@@ -1,10 +1,339 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Payment Billing System</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
-    <div class="HeadTag">PAYMENT BILLING SYSTEM</div>
-</body>
-</html>
+{% block headContent %}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        function expandID(param) {
+            console.log(param);
+            $.ajax({
+                type: "POST",
+                url: "{%url 'getDetailsAc2' %}",
+                data: {                    
+                    'userID': param,                                            
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'get',
+                },
+                success: function(data) {
+                    data = JSON.parse(data)
+                    console.log("Success " + data); 
+                    document.getElementById('T2').style.display="block";
+                    document.getElementById('Fee_ID').style.width="60px";
+                    document.getElementById('Fee_ID').innerHTML = "<a id='userID2' href='javascript:showCourse()'>" + param + "</a>";
+                    /* document.querySelector('.link').href = 'javascript:showCourse()' */
+                    document.getElementById('Total_Fee').style.width="200px";
+                    document.getElementById('Total_Fee').innerHTML = data.Fee;
+                    document.getElementById('Paid_amount').style.width="150px";
+                    document.getElementById('Paid_amount').innerHTML = data.Paid;                    
+                    document.getElementById('Balance').style.width="200px";
+                    document.getElementById('Balance').innerHTML = data.Balance;                    
+                },
+                error: function(data) {
+                    console.log("Error " + data);
+                }
+            });
+
+            /* $("a[href='#']").attr('href', 'javascript:showCourse()'); */
+        }
+
+        function showCourse() {
+            userID = document.getElementById('Fee_ID').innerText;
+            console.log(userID);
+            $.ajax({
+                type: "POST",
+                url: "{%url 'getDetailsAc3' %}",
+                data: {                    
+                    'userID': userID,                                            
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'get',
+                },
+                success: function(data) {
+                    data = JSON.parse(data)
+                    console.log("Success " + data); 
+                    document.getElementById('genInfo').style.display="block";
+                    document.getElementById('T3').style.display="block";                    
+                    document.getElementById('Course_ID').style.width="60px";
+                    document.getElementById('Course_ID').innerHTML = userID;
+                    document.getElementById('Course_Name').style.width="200px";
+                    document.getElementById('Course_Name').innerHTML = data.Name;
+                    document.getElementById('Course_Course').style.width="150px";
+                    document.getElementById('Course_Course').innerHTML = data.Course;                    
+                    document.getElementById('Course_Mobile').style.width="200px";
+                    document.getElementById('Course_Mobile').innerHTML = data.Mobile;
+                    document.getElementById('Course_DOS').style.width="200px";
+                    document.getElementById('Course_DOS').innerHTML = data.Date_of_Submission;
+                    document.getElementById('Course_Total_Fee').style.width="150px";
+                    document.getElementById('Course_Total_Fee').innerHTML = data.Fee;
+                    document.getElementById('Course_Paid_amount').style.width="150px";
+                    document.getElementById('Course_Paid_amount').innerHTML = data.Paid;                    
+                    document.getElementById('Course_Balance').style.width="150px";
+                    document.getElementById('Course_Balance').innerHTML = data.Balance;
+                },
+                error: function(data) {
+                    console.log('Error' + data)
+                }
+            });
+        }
+
+        function showInfo() {
+            userID = document.getElementById('Course_ID').innerHTML;
+            console.log(userID);
+            $.ajax({
+                type: "POST",
+                url: "{%url 'getDetailsAc4' %}",
+                data: {                    
+                    'userID': userID,                                            
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'get',
+                },
+                success: function(data) {
+                    data = JSON.parse(data)
+                    console.log("Success " + data); 
+                    document.getElementById('T4').style.display="block";
+                    document.getElementById('Info_ID').style.width="60px";
+                    document.getElementById('Info_ID').innerHTML = userID;
+                    document.getElementById('Info_Name').style.width="200px";
+                    document.getElementById('Info_Name').innerHTML = data.Name;
+                    document.getElementById('Info_Course').style.width="150px";
+                    document.getElementById('Info_Course').innerHTML = data.Course;                    
+                    document.getElementById('Info_Mobile').style.width="200px";
+                    document.getElementById('Info_Mobile').innerHTML = data.Mobile;
+                    document.getElementById('Info_Father_Name').style.width="200px";
+                    document.getElementById('Info_Father_Name').innerHTML = data.Father_name;
+                    document.getElementById('Info_Mother_Name').style.width="200px";
+                    document.getElementById('Info_Mother_Name').innerHTML = data.Mother_name;
+                    document.getElementById('Info_Qualification').style.width="200px";
+                    document.getElementById('Info_Qualification').innerHTML = data.Qualification;
+                    document.getElementById('Info_DOB').style.width="200px";
+                    document.getElementById('Info_DOB').innerHTML = data.DOB;
+                    document.getElementById('Info_DOJ').style.width="200px";
+                    document.getElementById('Info_DOJ').innerHTML = data.Date_of_Joining;
+                    document.getElementById('Info_Address').style.width="200px";
+                    document.getElementById('Info_Address').innerHTML = data.Address;
+                    document.getElementById('Info_Description').style.width="200px";
+                    document.getElementById('Info_Description').innerHTML = data.Description;
+                    document.getElementById('Info_Trainer').style.width="200px";
+                    document.getElementById('Info_Trainer').innerHTML = data.Trainer;
+                },
+                error: function(data) {
+                    console.log('Error' + data)
+                }
+            });
+        }
+    </script>
+
+    <style>
+        .HeadTag {
+            font: bold 45px comic-sans;
+            color: white;
+            background-color: teal;            
+        }        
+        .LogOutTag {
+            height: 200px;       
+        }
+        .MenuTag {
+            font: 20px comic-sans;
+            color: white;
+            background-color: teal;
+            margin-bottom: 30px;
+        }
+        .Left, .Bottom {        
+            float: left;
+        }
+        .Right {
+            float: left;
+            margin-left: 200px;
+        }
+        label {
+            padding-right: 20px;
+            padding-bottom: 20px;
+            size: 40px;
+        }
+        #home, #registerStudent, #modifyStudent, #administrator, #contact { 
+            text-decoration: none;
+            font: 20px comic-sans;
+            color: white;
+            padding-right: 50px;
+        }
+        #LO {
+            position: absolute;
+            text-decoration: none;
+            font: 17px comic-sans;
+            color: black;               
+            /*color: white;*/
+            background-color: olivedrab;
+            margin-left: 1150px;
+            margin-top: 100px;            
+            margin-bottom: 50px;
+            width: 80px;
+            border: 1px solid black;
+            padding-right: 2px;
+            padding-left: 10px;
+        }
+        label.accountantTitle {
+            font: 20px comic-sans;
+            color: blue;
+            padding-left: 500px;
+        }
+        input,select {
+            margin-bottom: 5px;
+        }
+        button {
+            margin-left: 57px;            
+            color: white;
+            background-color: black;
+        }
+        table, tr, th, td, thead, tbody {
+            border: 1px solid black;
+        }
+        #T1 {
+            display: "block";
+            width: 50%;
+        }        
+    </style>
+
+{% endblock %}
+
+{% block authContent %}
+
+    <div class="LogOutTag" style="background-image: url(/static/system-update.png); background-attachment: fixed;
+    background-size: cover;">
+        <a href="/logOut/" id="LO">LOG OUT</a>
+    </div>
+
+{% endblock %}
+
+{% block bodyContent %}
+
+    <div class="Body">
+        <div class="Left">
+            <form id='bPay' method="POST" action="/studentsDetails/">
+                {% csrf_token %}
+                <label class="accountantTitle">CONSULTANT</label> <br><br>
+                {{ form_ip.as_p }}
+                <button type="submit" id="search">Search</button> <br><br>
+                {% if shortData %}
+                <table id="T1">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                    </tr>
+                    </thead>    
+                    <tbody>
+                    {% for val in shortData %}
+                    <tr>
+                        <!--<td><button id='expand' type="button" onclick="expandID({{val}})">{{ val.id }}</button></td>-->
+                        <td><a id="userID1" href="javascript:expandID('{{ val.id }}')">{{ val.id }}</a></td>
+                        <td>{{ val.Name }}</td>
+                        <td>{{ val.Mobile }}</td>                        
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+                <br> <br>
+                <table id="T2" style="display: none; width: 70%;">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Total Fee</th>
+                        <th>Paid amount</th>
+                        <th>Balance</th>
+                    </tr>
+                    </thead>    
+                    <tbody>
+                    <tr>
+                        <td id="Fee_ID"></td>                    
+                        <td id="Total_Fee"></td>
+                        <td id="Paid_amount"></td>
+                        <td id="Balance"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br> <br>                
+            </form>
+        </div>
+        <div class="Right">
+            <form>   
+                <br>
+                <a id="genInfo" href="javascript:showInfo()" style="display: none;">General Information</a> <br>             
+                <table id="T3" style="display: none; width: 55%;">                         
+                    <tr>
+                        <th>ID</th>  
+                        <td id="Course_ID"></td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td id="Course_Name"></td>
+                    </tr>
+                    <tr>
+                        <th>Course</th>
+                        <td id="Course_Course"></td>
+                    </tr>
+                    <tr>
+                        <th>Mobile</th>
+                        <td id="Course_Mobile"></td>
+                    </tr>
+                    <tr>
+                        <th>Date of Submission</th>
+                        <td id="Course_DOS"></td>
+                    </tr>
+                    <tr>
+                        <th>Total Fee</th>
+                        <td id="Course_Total_Fee"></td>
+                    </tr>
+                    <tr>
+                        <th>Paid amount</th>
+                        <td id="Course_Paid_amount"></td>                        
+                    </tr>
+                    <tr>
+                        <th>Balance</th>
+                        <td id="Course_Balance"></td>
+                    </tr>                    
+                </table>
+                <br> <br>
+            </form>     
+        </div>
+        <div class="Bottom">
+            <form>
+                <table id="T4" style="display: none; width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Mobile</th>
+                        <th>Father Name</th>
+                        <th>Mother Name</th>
+                        <th>Qualification</th>
+                        <th>Date of Birth</th>
+                        <th>Date of Joining</th>
+                        <th>Address</th>
+                        <th>Description</th>
+                        <th>Trainer</th>
+                    </tr>
+                    </thead>    
+                    <tbody>
+                    <tr>
+                        <td id="Info_ID"></td>                    
+                        <td id="Info_Name"></td>
+                        <td id="Info_Course"></td>
+                        <td id="Info_Mobile"></td>
+                        <td id="Info_Father_Name"></td>
+                        <td id="Info_Mother_Name"></td>
+                        <td id="Info_Qualification"></td>
+                        <td id="Info_DOB"></td>
+                        <td id="Info_DOJ"></td>
+                        <td id="Info_Address"></td>
+                        <td id="Info_Description"></td>
+                        <td id="Info_Trainer"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

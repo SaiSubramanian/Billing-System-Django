@@ -1,5 +1,5 @@
 from django import forms
-from .models import Branches
+from .models import Branch_Name, Student
 
 class UserEntryForm(forms.Form):
     
@@ -51,14 +51,21 @@ class BranchesForm(forms.Form):
     branch = forms.ModelChoiceField(
         required = True,
         label = 'Branch',
-        queryset = Branches.objects.all().values_list('branch', flat=True)
+        queryset = Branch_Name.objects.all().values_list('Branch', flat=True)
     )
 
-"""
-class InputTextForm(forms.form):
+class InputTextForm(forms.Form):
 
     inputText = forms.CharField(
         required = True,
         label = 'Find'
     )
-"""
+
+class StudentEntryForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Student
+        fields = ['Name', 'Course', 'Mobile', 'Father_name', 'Mother_name', 'Qualification', 'DOB', 
+                  'Date_of_Joining', 'Date_of_Submission', 'Paid', 'Fee', 'Balance', 'Address', 
+                  'Description', 'Trainer']
