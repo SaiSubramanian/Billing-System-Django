@@ -15,8 +15,8 @@
             position: absolute;
             font: bold;
             color: white;
-            background-color: black;
-            margin-left: 1150px;
+            background-color: black;   
+            margin-left: 90%;      
             margin-top: 100px;            
             margin-bottom: 50px;
             width: 60px;
@@ -34,7 +34,7 @@
             float: left;
         }
         .Notice {
-            float: left;
+            float: right;            
         }
         label {
             padding-right: 20px;
@@ -48,7 +48,7 @@
         }
         #LAA {
             text-decoration: underline;
-            padding-left: 500px;
+            padding-left: 40%;
             color: blue;
         }
         label.acntntLogin {
@@ -59,11 +59,11 @@
         label.notice {
             color: blue;
             font: bold comic-sans;
-            padding-left: 250px;
+            margin-left: -50px;
         }
         label.noticeText {
             font: comic-sans;
-            padding-left: 200px;
+            margin-left: -90px;
         }
         input, select {
             margin-bottom: 5px;
@@ -99,12 +99,12 @@
 
 {% block bodyContent %}
 
-    <div class="Body">
+    <div class="Body">        
         <label id="invalidLogin"><b>{{ error }}</b></label> <br>
+        <a id="LAA" href="/adminLogin/">Login As Administrator</a> <br>
         <div class="Login">
             <form id="bPay" method="POST" action='/accountantAuth/'>
-                {% csrf_token %}
-                <a id="LAA" href="/adminLogin/">Login As Administrator</a> <br>
+                {% csrf_token %}                
                 <label class="acntntLogin">Login Form</label> <br><br>
                 {{ form_br.as_p }}
                 {{ form.as_p }}

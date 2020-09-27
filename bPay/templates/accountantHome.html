@@ -159,16 +159,17 @@
             position: absolute;
             text-decoration: none;
             font: 17px comic-sans;
-            color: black;               
-            /*color: white;*/
-            background-color: olivedrab;
-            margin-left: 1150px;
+            color: white;
+            background-color: black;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-left: 90%;
             margin-top: 100px;            
             margin-bottom: 50px;
             width: 80px;
             border: 1px solid black;
-            padding-right: 2px;
-            padding-left: 10px;
+            padding-right: 7px;
+            padding-left: 15px;
         }
         label.accountantTitle {
             font: 20px comic-sans;
@@ -185,11 +186,16 @@
         }
         table, tr, th, td, thead, tbody {
             border: 1px solid black;
+            background-color: white;
         }
         #T1 {
             display: "block";
             width: 50%;
-        }        
+        }   
+        #invalidName {
+            font-size: 30px;
+            color: red;
+        }     
     </style>
 
 {% endblock %}
@@ -206,6 +212,7 @@
 {% block bodyContent %}
 
     <div class="Body">
+        <label id="invalidName"><b>{{ error }}</b></label> <br>
         <div class="Left">
             <form id='bPay' method="POST" action="/studentsDetails/">
                 {% csrf_token %}

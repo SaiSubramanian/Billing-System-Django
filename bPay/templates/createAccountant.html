@@ -32,10 +32,12 @@
             position: absolute;
             text-decoration: none;
             font: 17px comic-sans;
-            color: black;
+            color: white;
+            background-color: black;
+            padding-top: 10px;
+            padding-bottom: 10px;
             margin-right: 5px;
-            background-color: olivedrab;
-            margin-left: 1150px;
+            margin-left: 90%;
             margin-top: 100px;
             margin-bottom: 50px;
             width: 80px;
@@ -61,6 +63,10 @@
         #id_branch, #id_userName, #id_passWord, #id_DOJ, #id_DOB, #id_salary {
             margin-left: 120px;
         }
+        #invalidName {
+            font-size: 30px;
+            color: red;
+        }
     </style>
 
 {% endblock %}
@@ -77,6 +83,7 @@
 {% block bodyContent %}
  
     <div class="Body">
+        <label id="invalidName"><b>{{ error }}</b></label> <br>
         <label class="adminTitle">CONSULTANT</label> <br><br>
         <form id="bPay" method="POST" action='/createAccountant/'> 
             {% csrf_token %}

@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.core.mail import send_mail
-import json
+import json, smtplib
 
 def loginPageView(request):
     context = {}
@@ -128,8 +128,19 @@ def createAccountant(request):
             )
             User.objects.create_user(userData['userName'], '', userData['passWord'])
             return redirect('/adminHome/')   
+        else:
+            context = {}
+            context['form_br'] = BranchesForm()
+            context['form'] = UserRegistrationForm()
+            context['error'] = 'Username already taken'
+            return render(request, 'createAccountant.html', context)
+
     else:
-        return redirect('/accountantCreation/')
+        context = {}
+        context['form_br'] = BranchesForm()
+        context['form'] = UserRegistrationForm()
+        context['error'] = 'Invalid Data entered'
+        return render(request, 'createAccountant.html', context)        
 
 @login_required
 @csrf_exempt
@@ -151,7 +162,12 @@ def adminGetDetails(request):
     branch = request.POST['branch']
     name = request.POST['inputText']
     if not (Accountant.objects.filter(Username__startswith = name, Branch = branch).exists()):
-        raise forms.ValidationError("No Accountant exists")
+        context = {}
+        context['form_br'] = BranchesForm()
+        context['form_ip'] = InputTextForm()
+        context['error'] = 'No Accountant match found!'
+        return render(request, 'adminHome.html', context)
+        #raise forms.ValidationError("No Accountant exists")
     else:
         shortData_list = Accountant.objects.filter(Username__startswith = name, Branch = branch)
         """people_list = []
@@ -192,7 +208,11 @@ def deleteData(request):
 def accountantGetDetails(request):
     name = request.POST['inputText']
     if not (Student.objects.filter(Name__startswith = name).exists()):
-        raise forms.ValidationError("No Student Account exists")
+        context = {}
+        context['form_ip'] = InputTextForm()
+        context['error'] = 'No Student Account match found!'
+        return render(request, 'accountantHome.html', context)
+        #raise forms.ValidationError("No Student Account exists")
     else:
         shortData_list = Student.objects.filter(Name__startswith = name)
         """people_list = []
@@ -229,7 +249,6 @@ def accountantGetGeneralDetails(request):
     generalData = (Student.objects.get(pk = userIdVal)).getGeneralDetails()
     return HttpResponse(json.dumps(generalData))
 
-@login_required
 def acHome(request):
     if User.objects.filter(username=request.user, is_superuser=False).exists():
         return redirect('/accountantHome/')
@@ -341,12 +360,14 @@ def sendMail(request):
     userId = request.POST.get('mailID')
     userQuery = request.POST.get('query')
     print('B4')
-    send_mail(
+    smtpObj = smtplib.SMTP('localhost')
+    smtpObj.sendmail('contactsubramanianr@gmail.com', 'saisubramanian97@gmail.com', userQuery)         
+    """send_mail(
         'Query from' + str(userId),
         userQuery,
-        'saisurapals@gmail.com',
+        'contactsubramanianr@gmail.com',
         ['saisubramanian97@gmail.com'],
         fail_silently=False
-    )
+    )"""
     print('After')
 
