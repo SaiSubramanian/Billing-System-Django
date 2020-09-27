@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'frbey+2p1jl)i6&++(^g-d0+rabkf5&j$03dm3e==_u)y!mv3t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['subramanianr.pythonanywhere.com']
 
 
 # Application definition
@@ -128,3 +128,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'contactsubramanianr@gmail.com'
 EMAIL_HOST_PASSWORD = "S@i*0897"
 EMAIL_USE_TLS = 'True'
+
+try:
+    from .local_settings import *
+except ImportError:
+    print('Nothing there') 
