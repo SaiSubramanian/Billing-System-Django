@@ -82,7 +82,7 @@
             margin-bottom: 5px;
         }       
         button {          
-            margin-left: 50px;              
+            margin-left: 45%;              
             color: white;
             background-color: black;
         }
@@ -113,16 +113,7 @@
 {% endblock %}
 
 {% block bodyContent %}
-    <div class="Body">
-        <div class="modifyStud">
-            <form id="bPay2" method="POST" action="/modifyStudentDetails/">
-                {% csrf_token %}
-                {% if form %}
-                {{ form.as_p }}
-                <button id="Modify" type="submit">Modify</button>
-                {% endif %}
-            </form>
-        </div>
+    <div class="Body">        
         <div class="searchStud">
             <form id="bPay1" method="POST" action="/getStudentDetails/"> 
                 {% csrf_token %}
@@ -150,6 +141,15 @@
                 </table>
                 {% endif %}
                 <br> <br>                
+            </form>
+        </div>
+        <div class="modifyStud">
+            <form id="bPay2" method="POST" action="/modifyStudentDetails/">
+                {% csrf_token %}
+                {% if form %}
+                {{ form.as_p }}
+                <button id="Modify" type="submit">Modify</button>
+                {% endif %}
             </form>
         </div>
     </div>
